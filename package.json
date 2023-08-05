@@ -1,0 +1,18 @@
+{
+  "name": "assignment4api",
+  "version": "1.0.0",
+  "description": "Create a NodeJS implementation of the server components required to provide data from a MongoDB database instance to the Javascript client described in Project 1",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.4.2",
+    "mongoose-sequence": "^5.3.1",
+    "uuid": "^9.0.0"
+  }
+}
