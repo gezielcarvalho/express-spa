@@ -78,8 +78,7 @@ const deleteComment = async (req, res) => {
     if (!deletedComment) {
       return res.status(404).json({ message: "Comment not found." });
     }
-    const { __v, _id, ...commentFormatted } = deletedComment.toObject();
-    res.status(200).json({ Id: _id, ...commentFormatted });
+    res.status(204).json();
   } catch (error) {
     res.status(500).json({ error });
   }

@@ -96,8 +96,7 @@ const deleteCartItem = async (req, res) => {
     if (!deletedCartItem) {
       return res.status(404).json({ message: "Cart item not found." });
     }
-    const { __v, _id, ...cartItemFormatted } = deletedCartItem.toObject();
-    res.status(200).json({ Id: _id, ...cartItemFormatted });
+    res.status(204).json();
   } catch (error) {
     res.status(500).json({ error });
   }

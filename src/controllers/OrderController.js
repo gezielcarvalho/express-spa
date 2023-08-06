@@ -100,8 +100,7 @@ const deleteOrder = async (req, res) => {
     if (!deletedOrder) {
       return res.status(404).json({ message: "Order not found." });
     }
-    const { __v, _id, ...orderFormatted } = deletedOrder.toObject();
-    res.status(200).json({ Id: _id, ...orderFormatted });
+    res.status(204).json();
   } catch (error) {
     res.status(500).json({ error });
   }
