@@ -96,10 +96,34 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// controller to login and return the user data in the response
+const loginUser = async (req, res) => {
+  try {
+    const { Email, Password } = req.body;
+    const user = await User.findOne({ Email: Email });
+    // get password from the user object
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials." });
+    }
+    // compare the password with the hashed password
+    const isPasswordCorrect = await bcrypt.compare(Password, user.Password);
+    if (!isPasswordCorrect) {
+      return res.status(401).json({ message: "Invalid credentials." });
+    }
+    // destructure the new user object to omit the __v and _id fields and include the Id field with the _id value
+    const { __v, _id, ...userFormatted } = user.toObject();
+    delete userFormatted.Password;
+    res.status(200).json({ Id: _id, ...userFormatted });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
   updateUser,
   deleteUser,
+  loginUser,
 };
