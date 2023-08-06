@@ -33,7 +33,7 @@ app.use(express.json());
 // Routes
 app.use("/users", userRoutes);
 app.use("/carts", cartRoutes);
-// app.use("/cartitems", cartItemRoutes);
+app.use("/cartitems", cartItemRoutes);
 // app.use("/comments", commentRoutes);
 // app.use("/orders", orderRoutes);
 // app.use("/products", productRoutes);
