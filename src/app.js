@@ -36,7 +36,7 @@ app.use("/carts", cartRoutes);
 app.use("/cartitems", cartItemRoutes);
 app.use("/comments", commentRoutes);
 app.use("/orders", orderRoutes);
-// app.use("/products", productRoutes);
+app.use("/products", productRoutes);
 
 // Default route
 app.get("/", (req, res) => {
