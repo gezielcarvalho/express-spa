@@ -119,6 +119,20 @@ const loginUser = async (req, res) => {
   }
 };
 
+// Controller for checking if an email is already in use
+const checkEmail = async (req, res) => {
+  try {
+    const { Email } = req.body;
+    const user = await User.findOne({ Email: Email });
+    if (user) {
+      return res.status(409).json({ message: "Email already in use." });
+    }
+    res.status(200).json({ message: "Email is available." });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -126,4 +140,5 @@ module.exports = {
   updateUser,
   deleteUser,
   loginUser,
+  checkEmail,
 };

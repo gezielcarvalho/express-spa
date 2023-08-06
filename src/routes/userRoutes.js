@@ -20,4 +20,7 @@ router.delete("/:id", userController.deleteUser);
 // Route to login a user
 router.post("/login", userController.loginUser);
 
+// Route to check if an email is already in use
+router.post("/checkemailexists", userController.checkEmail);
+
 module.exports = router;
