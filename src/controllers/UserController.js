@@ -1,18 +1,23 @@
 const User = require("../models/User");
+const bcrypt = require("bcrypt");
 
 // Controller to create a new user
 const createUser = async (req, res) => {
   try {
     const { FullName, UserName, Email, Password, Address } = req.body;
+    // hash the password
+    const hashedPassword = await bcrypt.hash(Password, 10);
     const newUser = await User.create({
       FullName,
       UserName,
       Email,
-      Password,
+      Password: hashedPassword,
       Address,
     });
     // destructure the new user object to omit the __v and _id fields
     const { __v, _id, ...user } = newUser.toObject();
+    // remove the password field from the user object
+    delete user.Password;
 
     res.status(201).json({ Id: _id, ...user });
   } catch (error) {
@@ -27,6 +32,8 @@ const getAllUsers = async (req, res) => {
     // destructure the new user object to omit the __v and _id fields and include the Id field with the _id value
     const usersFormatted = users.map((user) => {
       const { __v, _id, ...userFormatted } = user.toObject();
+      // remove the password field from the user object
+      delete userFormatted.Password;
       return { Id: _id, ...userFormatted };
     });
     res.status(200).json(usersFormatted);
@@ -45,6 +52,7 @@ const getUserById = async (req, res) => {
     }
     // destructure the new user object to omit the __v and _id fields and include the Id field with the _id value
     const { __v, _id, ...userFormatted } = user.toObject();
+    delete userFormatted.Password;
     res.status(200).json({ Id: _id, ...userFormatted });
   } catch (error) {
     res.status(500).json({ error });
@@ -56,15 +64,18 @@ const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
     const { FullName, UserName, Email, Password, Address } = req.body;
+    // hash the password
+    const hashedPassword = await bcrypt.hash(Password, 10);
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { FullName, UserName, Email, Password, Address },
+      { FullName, UserName, Email, Password: hashedPassword, Address },
       { new: true }
     );
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found." });
     }
     const { __v, _id, ...userFormatted } = updatedUser.toObject();
+    delete userFormatted.Password;
     res.status(200).json({ Id: _id, ...userFormatted });
   } catch (error) {
     res.status(500).json({ error });
