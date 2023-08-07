@@ -73,10 +73,10 @@ const getCommentById = async (req, res) => {
 const updateComment = async (req, res) => {
   try {
     const commentId = req.params.id;
-    const { ProductId, OrderId, CommentText, Image, Rating } = req.body;
+    const { ProductId, OrderId, CommentText, Rating } = req.body;
     const updatedComment = await Comment.findByIdAndUpdate(
       commentId,
-      { ProductId, OrderId, CommentText, Image, Rating },
+      { ProductId, OrderId, CommentText, Rating },
       { new: true }
     );
     if (!updatedComment) {
