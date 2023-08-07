@@ -2,6 +2,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const fileUploadInstance = require("express-fileupload");
+const path = require("path");
 
 const cartRoutes = require("./routes/cartRoutes");
 const cartItemRoutes = require("./routes/cartItemRoutes");
@@ -15,6 +17,7 @@ dotenv.config();
 
 // Create Express app
 const app = express();
+const fileUpload = fileUploadInstance();
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -29,6 +32,7 @@ db.once("open", () => {
 
 // Middleware
 app.use(express.json());
+app.use(fileUpload);
 
 // Routes
 app.use("/users", userRoutes);

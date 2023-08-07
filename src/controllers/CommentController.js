@@ -2,13 +2,32 @@ const Comment = require("../models/Comment");
 
 // Controller for creating a new comment
 const createComment = async (req, res) => {
+  let uploadPath;
+  let imageName = "default.jpg";
+  if (
+    !req.files ||
+    Object.keys(req.files).length === 0 ||
+    !req.files.Image.name.match(/\.(jpg|jpeg|png)$/i)
+  ) {
+    console.log("No image files were uploaded.");
+  } else {
+    const { Image } = req.files;
+    imageName = `${Date.now()}-${Image.name}`;
+    console.log(imageName);
+    uploadPath = "./public/images/" + imageName;
+    Image.mv(uploadPath, async (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
   try {
-    const { ProductId, OrderId, CommentText, Image, Rating } = req.body;
+    const { ProductId, OrderId, CommentText, Rating } = req.body;
     const newComment = await Comment.create({
       ProductId,
       OrderId,
       CommentText,
-      Image,
+      Image: imageName,
       Rating,
     });
     // destructure the new comment object to omit the __v and _id fields
