@@ -14,7 +14,7 @@ const createComment = async (req, res) => {
     const { Image } = req.files;
     imageName = `${Date.now()}-${Image.name}`;
     console.log(imageName);
-    uploadPath = "./public/images/" + imageName;
+    uploadPath = "./public/images/comments/" + imageName;
     Image.mv(uploadPath, async (err) => {
       if (err) {
         console.log(err);
