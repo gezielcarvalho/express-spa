@@ -130,6 +130,6 @@ dist
 .pnp.*
 
 # ignore image files in /public/images
-/public/images/*.png
-/public/images/*.jpg
-/public/images/*.jpeg
+/public/**/*.png
+/public/**/*.jpg
+/public/**/*.jpeg

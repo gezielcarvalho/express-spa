@@ -2,14 +2,33 @@ const Product = require("../models/Product");
 
 // Controller for creating a new product
 const createProduct = async (req, res) => {
+  let uploadPath;
+  let imageName = "default.jpg";
+  if (
+    !req.files ||
+    Object.keys(req.files).length === 0 ||
+    !req.files.Image.name.match(/\.(jpg|jpeg|png)$/i)
+  ) {
+    console.log("No image files were uploaded.");
+  } else {
+    const { Image } = req.files;
+    imageName = `${Date.now()}-${Image.name}`;
+    console.log(imageName);
+    uploadPath = "./public/images/products/" + imageName;
+    Image.mv(uploadPath, async (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
   try {
-    const { Name, Description, Price, Shipping, Image } = req.body;
+    const { Name, Description, Price, Shipping } = req.body;
     const newProduct = await Product.create({
       Name,
       Description,
       Price,
       Shipping,
-      Image,
+      Image: imageName,
     });
     // destructure the new product object to omit the __v and _id fields
     const { __v, _id, ...product } = newProduct.toObject();
