@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const fileUploadInstance = require("express-fileupload");
-const path = require("path");
+const cors = require("cors");
 
 const cartRoutes = require("./routes/cartRoutes");
 const cartItemRoutes = require("./routes/cartItemRoutes");
@@ -18,6 +18,13 @@ dotenv.config();
 // Create Express app
 const app = express();
 const fileUpload = fileUploadInstance();
+
+// Serve static files
+app.use(express.static("public"));
+
+// Enable CORS
+app.use(cors());
+app.options("*", cors());
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {

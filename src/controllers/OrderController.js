@@ -5,18 +5,22 @@ const createOrder = async (req, res) => {
   try {
     const {
       UserId,
+      OrderCartOrigin,
+      OrderTotalQuantity,
+      OrderTotalShipping,
+      OrderTotalProducts,
+      OrderTotalTaxes,
       OrderDate,
-      ProductsTotal,
-      ShippingTotal,
-      OrderTotal,
       ShippingAddress,
     } = req.body;
     const newOrder = await Order.create({
       UserId,
+      OrderCartOrigin,
+      OrderTotalQuantity,
+      OrderTotalShipping,
+      OrderTotalProducts,
+      OrderTotalTaxes,
       OrderDate,
-      ProductsTotal,
-      ShippingTotal,
-      OrderTotal,
       ShippingAddress,
     });
     // destructure the new order object to omit the __v and _id fields
@@ -64,20 +68,24 @@ const updateOrder = async (req, res) => {
     const orderId = req.params.id;
     const {
       UserId,
+      OrderCartOrigin,
+      OrderTotalQuantity,
+      OrderTotalShipping,
+      OrderTotalProducts,
+      OrderTotalTaxes,
       OrderDate,
-      ProductsTotal,
-      ShippingTotal,
-      OrderTotal,
       ShippingAddress,
     } = req.body;
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
       {
         UserId,
+        OrderCartOrigin,
+        OrderTotalQuantity,
+        OrderTotalShipping,
+        OrderTotalProducts,
+        OrderTotalTaxes,
         OrderDate,
-        ProductsTotal,
-        ShippingTotal,
-        OrderTotal,
         ShippingAddress,
       },
       { new: true }

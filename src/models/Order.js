@@ -10,19 +10,27 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  OrderCartOrigin: {
+    type: String,
+    required: true,
+  },
   OrderDate: {
     type: Date,
     required: true,
   },
-  ProductsTotal: {
+  OrderTotalQuantity: {
     type: Number,
     required: true,
   },
-  ShippingTotal: {
+  OrderTotalShipping: {
     type: Number,
     required: true,
   },
-  OrderTotal: {
+  OrderTotalProducts: {
+    type: Number,
+    required: true,
+  },
+  OrderTotalTaxes: {
     type: Number,
     required: true,
   },

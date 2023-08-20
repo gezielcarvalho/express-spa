@@ -64,13 +64,17 @@ const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
     const { FullName, UserName, Email, Password, Address } = req.body;
-    // hash the password
-    const hashedPassword = await bcrypt.hash(Password, 10);
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { FullName, UserName, Email, Password: hashedPassword, Address },
-      { new: true }
-    );
+    const userToUpdate = { FullName, UserName, Email, Password, Address };
+    if (Password === undefined || Password === null || Password === "") {
+      delete userToUpdate.Password;
+    } else {
+      // hash the password
+      const hashedPassword = await bcrypt.hash(Password, 10);
+      userToUpdate.Password = hashedPassword;
+    }
+    const updatedUser = await User.findByIdAndUpdate(userId, userToUpdate, {
+      new: true,
+    });
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found." });
     }
