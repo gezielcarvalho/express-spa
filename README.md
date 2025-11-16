@@ -47,41 +47,89 @@ The easiest way to run the application is using Docker Compose:
 git clone <repository-url>
 cd express-spa
 
-# Start the application and MongoDB
-docker-compose up -d
+# Start all services (MongoDB + Mongo Express + API)
+npm run docker:up
 
 # Check logs
-docker-compose logs -f app
+npm run docker:logs
 
-# Stop the application
-docker-compose down
+# Stop all services
+npm run docker:down
 ```
 
-The API will be available at `http://localhost:3000`
+**Access Points:**
+
+- API: `http://localhost:3000`
+- Swagger UI: `http://localhost:3000/api-docs`
+- Mongo Express (Database UI): `http://localhost:8081` (admin/admin123)
 
 ### Docker Commands Reference
 
 ```bash
-# Build and start services
-docker-compose up -d
+# Using npm scripts (recommended)
+npm run docker:up          # Start all containers
+npm run docker:down        # Stop all containers
+npm run docker:logs        # View app logs
+npm run docker:restart     # Restart app container
 
-# View logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-
-# Stop and remove volumes (WARNING: deletes database data)
-docker-compose down -v
-
-# Rebuild containers
-docker-compose up -d --build
+# Using docker compose directly
+docker compose up -d                # Start all services
+docker compose down                 # Stop all services
+docker compose down -v              # Stop and remove volumes (deletes data)
+docker compose logs -f app          # View app logs
+docker compose logs -f mongodb      # View database logs
 
 # Access MongoDB shell
 docker exec -it express-spa-mongodb mongosh e-store
 ```
 
+### Mongo Express - Database Management UI
+
+A web-based MongoDB admin interface is included:
+
+- **URL:** `http://localhost:8081`
+- **Username:** `admin`
+- **Password:** `admin123`
+
+Use Mongo Express to:
+
+- Browse collections and documents
+- Execute queries
+- Add/edit/delete data
+- Monitor database performance
+
 ## Local Development Setup
+
+### Recommended: Local App with Dockerized Database
+
+This approach gives you the best of both worlds - containerized database services with local app debugging:
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Start MongoDB and Mongo Express in Docker
+npm run dev:db
+
+# 3. Run the app locally with hot-reload
+npm run dev
+```
+
+**Or use the combined command:**
+
+```bash
+npm run dev:local  # Starts DB containers + runs app in watch mode
+```
+
+**Access Points:**
+
+- API: `http://localhost:3000`
+- Swagger UI: `http://localhost:3000/api-docs`
+- Mongo Express: `http://localhost:8081` (admin/admin123)
+
+### Alternative: Fully Local Setup
+
+If you prefer to run everything locally without Docker:
 
 ### 1. Install Dependencies
 
@@ -105,9 +153,18 @@ NODE_ENV=development
 MONGODB_URI=mongodb://localhost:27017/e-store
 ```
 
-### 3. Start MongoDB
+### 3. Start MongoDB Locally
 
-Make sure MongoDB is running locally on port 27017.
+```bash
+# Linux
+sudo systemctl start mongod
+
+# macOS
+brew services start mongodb-community
+
+# Windows
+net start MongoDB
+```
 
 ### 4. Run the Application
 
@@ -122,8 +179,6 @@ npm run dev
 ```bash
 npm start
 ```
-
-The API will be available at `http://localhost:3000`
 
 ## API Documentation
 
@@ -210,7 +265,8 @@ express-spa/
 │   ├── app.js             # Application entry point
 │   ├── config/            # Configuration files
 │   │   ├── database.js    # Database configuration
-│   │   └── express.js     # Express configuration
+│   │   ├── express.js     # Express configuration
+│   │   └── swagger.js     # Swagger/OpenAPI configuration
 │   ├── controllers/       # Route controllers
 │   │   ├── CartController.js
 │   │   ├── CartItemController.js
@@ -246,9 +302,23 @@ express-spa/
 
 ### Available Scripts
 
+#### Production & Standard
+
 - `npm start` - Start the production server
 - `npm run dev` - Start development server with auto-reload
 - `npm test` - Run tests (to be implemented)
+
+#### Docker - Full Stack
+
+- `npm run docker:up` - Start all containers (MongoDB + Mongo Express + App)
+- `npm run docker:down` - Stop and remove all containers
+- `npm run docker:logs` - View app container logs in real-time
+- `npm run docker:restart` - Restart the app container
+
+#### Development - Local App with Dockerized Database
+
+- `npm run dev:local` - Start DB containers + run app locally in watch mode
+- `npm run dev:db` - Start only MongoDB and Mongo Express containers
 
 ### Adding New Features
 

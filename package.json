@@ -6,6 +6,12 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "node --watch src/app.js",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f app",
+    "docker:restart": "docker compose restart app",
+    "dev:local": "docker compose up -d mongodb mongo-express && node --watch src/app.js",
+    "dev:db": "docker compose up -d mongodb mongo-express",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
