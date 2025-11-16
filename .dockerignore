@@ -5,13 +5,10 @@ yarn-error.log
 package-lock.json
 yarn.lock
 
-# TypeScript
-*.ts
-!src/**/*.ts
-tsconfig.json
-nodemon.json
+# TypeScript source files (we'll copy them explicitly)
+# Keep tsconfig.json - needed for build
 
-# Build output
+# Build output (will be generated during build)
 dist
 
 # Environment files
