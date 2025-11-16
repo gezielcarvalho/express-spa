@@ -1,4 +1,14 @@
 import { Document } from "mongoose";
+import { FileArray } from "express-fileupload";
+
+// Extend Express Request to include files from express-fileupload
+declare global {
+  namespace Express {
+    interface Request {
+      files?: FileArray | null;
+    }
+  }
+}
 
 export interface IUser extends Document {
   _id: string;
