@@ -6,12 +6,19 @@ WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
+COPY tsconfig.json ./
 
-# Install dependencies
-RUN npm install --omit=dev
+# Install dependencies (including devDependencies for build)
+RUN npm install
 
 # Copy application files
 COPY . .
+
+# Build TypeScript
+RUN npm run build
+
+# Remove devDependencies
+RUN npm prune --production
 
 # Create directory for uploads if needed
 RUN mkdir -p /app/uploads

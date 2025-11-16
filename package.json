@@ -2,15 +2,17 @@
   "name": "assignment4api",
   "version": "1.0.0",
   "description": "Create a NodeJS implementation of the server components required to provide data from a MongoDB database instance to the Javascript client described in Project 1",
-  "main": "src/app.js",
+  "main": "dist/app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "node --watch src/app.js",
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "nodemon",
+    "dev:ts": "ts-node src/app.ts",
     "docker:up": "docker compose up -d --build",
     "docker:down": "docker compose down",
     "docker:logs": "docker compose logs -f app",
     "docker:restart": "docker compose restart app",
-    "dev:local": "docker compose up -d mongodb mongo-express && node --watch src/app.js",
+    "dev:local": "docker compose up -d mongodb mongo-express && nodemon",
     "dev:db": "docker compose up -d mongodb mongo-express",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -28,5 +30,18 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/express-fileupload": "^1.5.1",
+    "@types/node": "^24.10.1",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

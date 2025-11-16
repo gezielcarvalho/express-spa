@@ -5,6 +5,15 @@ yarn-error.log
 package-lock.json
 yarn.lock
 
+# TypeScript
+*.ts
+!src/**/*.ts
+tsconfig.json
+nodemon.json
+
+# Build output
+dist
+
 # Environment files
 .env
 .env.local
