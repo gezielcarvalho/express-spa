@@ -13,15 +13,19 @@ A robust NodeJS REST API implementation for an e-commerce platform, providing se
 - 🐳 Docker support for easy deployment
 - 📊 MongoDB database integration
 - 📚 Interactive API documentation with Swagger UI
+- 📘 Full TypeScript support with strict type checking
 
 ## Tech Stack
 
+- **Language:** TypeScript 5.x
 - **Runtime:** Node.js 18+
 - **Framework:** Express.js
 - **Database:** MongoDB with Mongoose ODM
 - **Authentication:** bcrypt for password hashing
 - **File Upload:** express-fileupload
 - **CORS:** Enabled for cross-origin requests
+- **API Docs:** Swagger/OpenAPI 3.0
+- **Dev Tools:** ts-node, nodemon for hot reload
 
 ## Prerequisites
 
@@ -168,16 +172,18 @@ net start MongoDB
 
 ### 4. Run the Application
 
-**Development mode** (with auto-reload):
+**Development mode** (with auto-reload, runs TypeScript directly):
 
 ```bash
-npm run dev
+npm run dev        # Uses nodemon + ts-node
+npm run dev:ts     # Direct ts-node execution
 ```
 
-**Production mode:**
+**Production mode** (compile and run):
 
 ```bash
-npm start
+npm run build      # Compile TypeScript to JavaScript
+npm start          # Run compiled code
 ```
 
 ## API Documentation
@@ -261,35 +267,40 @@ You can test all API endpoints directly from the Swagger UI without needing exte
 express-spa/
 ├── public/                 # Static files and HTML pages
 │   └── images/            # Image assets
-├── src/
-│   ├── app.js             # Application entry point
+├── src/                   # TypeScript source files
+│   ├── app.ts             # Application entry point
 │   ├── config/            # Configuration files
-│   │   ├── database.js    # Database configuration
-│   │   ├── express.js     # Express configuration
-│   │   └── swagger.js     # Swagger/OpenAPI configuration
-│   ├── controllers/       # Route controllers
-│   │   ├── CartController.js
-│   │   ├── CartItemController.js
-│   │   ├── CommentController.js
-│   │   ├── OrderController.js
-│   │   ├── ProductController.js
-│   │   └── UserController.js
+│   │   ├── database.ts    # Database configuration
+│   │   ├── express.ts     # Express configuration
+│   │   └── swagger.ts     # Swagger/OpenAPI configuration
+│   ├── controllers/       # Route controllers (TypeScript)
+│   │   ├── CartController.ts
+│   │   ├── CartItemController.ts
+│   │   ├── CommentController.ts
+│   │   ├── OrderController.ts
+│   │   ├── ProductController.ts
+│   │   └── UserController.ts
 │   ├── middlewares/       # Custom middleware
 │   │   └── authMiddleware.js
-│   ├── models/            # Mongoose models
-│   │   ├── Cart.js
-│   │   ├── CartItem.js
-│   │   ├── Comment.js
-│   │   ├── Order.js
-│   │   ├── Product.js
-│   │   └── User.js
-│   └── routes/            # Route definitions
-│       ├── cartRoutes.js
-│       ├── cartItemRoutes.js
-│       ├── commentRoutes.js
-│       ├── orderRoutes.js
-│       ├── productRoutes.js
-│       └── userRoutes.js
+│   ├── models/            # Mongoose models (TypeScript)
+│   │   ├── Cart.ts
+│   │   ├── CartItem.ts
+│   │   ├── Comment.ts
+│   │   ├── Order.ts
+│   │   ├── Product.ts
+│   │   └── User.ts
+│   ├── routes/            # Route definitions (TypeScript)
+│   │   ├── cartRoutes.ts
+│   │   ├── cartItemRoutes.ts
+│   │   ├── commentRoutes.ts
+│   │   ├── orderRoutes.ts
+│   │   ├── productRoutes.ts
+│   │   └── userRoutes.ts
+│   └── types/             # TypeScript type definitions
+│       └── index.ts       # Shared interfaces and types
+├── dist/                  # Compiled JavaScript (generated)
+├── tsconfig.json          # TypeScript configuration
+├── nodemon.json           # Nodemon configuration
 ├── .env.example           # Example environment variables
 ├── .dockerignore          # Docker ignore file
 ├── Dockerfile             # Docker configuration
@@ -300,17 +311,61 @@ express-spa/
 
 ## Development
 
+## TypeScript Implementation
+
+This project is written in **TypeScript** for improved type safety, better developer experience, and maintainable code.
+
+### Why TypeScript?
+
+- ✅ **Type Safety**: Catch errors at compile-time instead of runtime
+- ✅ **Better IDE Support**: Enhanced autocomplete, refactoring, and navigation
+- ✅ **Self-Documenting**: Types serve as inline documentation
+- ✅ **Maintainability**: Easier to refactor and scale the codebase
+- ✅ **Modern Features**: Latest ECMAScript features with backwards compatibility
+
+### TypeScript Workflow
+
+**Development** (no build required):
+
+```bash
+npm run dev        # Nodemon watches .ts files, runs with ts-node
+npm run dev:ts     # Direct TypeScript execution
+```
+
+**Production** (compile first):
+
+```bash
+npm run build      # Compiles src/*.ts → dist/*.js
+npm start          # Runs compiled JavaScript
+```
+
+**Docker** (builds automatically):
+
+```bash
+npm run docker:up  # Dockerfile compiles TypeScript during build
+```
+
+### Type Definitions
+
+All TypeScript interfaces are defined in `src/types/index.ts`:
+
+- `IUser`, `IProduct`, `ICart`, `ICartItem`, `IOrder`, `IComment`
+- Mongoose models extend these interfaces for full type safety
+- Express Request/Response types for all controllers
+
 ### Available Scripts
 
-#### Production & Standard
+#### TypeScript Development
 
-- `npm start` - Start the production server
-- `npm run dev` - Start development server with auto-reload
+- `npm run build` - Compile TypeScript to JavaScript (output to `dist/`)
+- `npm run dev` - Development server with nodemon + ts-node (auto-reload)
+- `npm run dev:ts` - Direct TypeScript execution with ts-node
+- `npm start` - Run compiled production build from `dist/`
 - `npm test` - Run tests (to be implemented)
 
 #### Docker - Full Stack
 
-- `npm run docker:up` - Start all containers (MongoDB + Mongo Express + App)
+- `npm run docker:up` - Build and start all containers (MongoDB + Mongo Express + App)
 - `npm run docker:down` - Stop and remove all containers
 - `npm run docker:logs` - View app container logs in real-time
 - `npm run docker:restart` - Restart the app container
@@ -322,10 +377,13 @@ express-spa/
 
 ### Adding New Features
 
-1. Create model in `src/models/`
-2. Create controller in `src/controllers/`
-3. Define routes in `src/routes/`
-4. Register routes in `src/app.js`
+1. Define TypeScript interfaces in `src/types/index.ts`
+2. Create Mongoose model in `src/models/` (extends interface)
+3. Create controller in `src/controllers/` (use Request/Response types)
+4. Define routes in `src/routes/` with Swagger JSDoc comments
+5. Register routes in `src/app.ts`
+6. TypeScript will validate types during development
+7. Build with `npm run build` before deploying
 
 ## Troubleshooting
 
